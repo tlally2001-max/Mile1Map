@@ -78,18 +78,9 @@
         style: (feature) => {
           const zip = feature.properties?.ZIP || "Unknown";
           const colorValue = zipColors[zip];
-
-          // TESTING: Only show Mar (purple) zip codes
-          if (colorValue !== "purple") {
-            return {
-              fillOpacity: 0,
-              color: "#555",
-              weight: 0,
-              interactive: false
-            };
-          }
-
-          let color = "#9b59b6"; // Mar (purple)
+          let color = "#2ecc71"; // Original (green) - default
+          if (colorValue === "blue") color = "#3498db"; // New (blue)
+          else if (colorValue === "purple") color = "#9b59b6"; // Mar (purple)
 
           return {
             fillColor: color,
@@ -116,7 +107,15 @@
       legend.onAdd = function (map) {
         const div = L.DomUtil.create("div", "legend");
         div.innerHTML = `
-          <div style="font-weight: bold; margin-bottom: 8px;">ZIP Code Status (TESTING: Mar only)</div>
+          <div style="font-weight: bold; margin-bottom: 8px;">ZIP Code Status</div>
+          <div class="legend-item">
+            <div class="legend-color" style="background-color: #2ecc71;"></div>
+            <span>Original (20,339)</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-color" style="background-color: #3498db;"></div>
+            <span>Feb (1,432)</span>
+          </div>
           <div class="legend-item">
             <div class="legend-color" style="background-color: #9b59b6;"></div>
             <span>Mar (274)</span>

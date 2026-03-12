@@ -77,8 +77,10 @@
       const layer = L.geoJSON(geojson, {
         style: (feature) => {
           const zip = feature.properties?.ZIP || "Unknown";
-          const color = zipColors[zip] === "blue" ? "#3498db" : "#2ecc71";
-          const status = zipColors[zip] === "blue" ? "New" : "Original";
+          const colorValue = zipColors[zip];
+          let color = "#2ecc71"; // Original (green) - default
+          if (colorValue === "blue") color = "#3498db"; // New (blue)
+          else if (colorValue === "purple") color = "#9b59b6"; // Mar (purple)
 
           return {
             fillColor: color,
@@ -89,7 +91,10 @@
         },
         onEachFeature: (feature, layer) => {
           const zip = feature.properties?.ZIP || "Unknown";
-          const status = zipColors[zip] === "blue" ? "New (File 2)" : "Original (File 1)";
+          const colorValue = zipColors[zip];
+          let status = "Original";
+          if (colorValue === "blue") status = "New";
+          else if (colorValue === "purple") status = "Mar";
           layer.bindPopup(`<b>ZIP:</b> ${zip}<br><b>Status:</b> ${status}`);
         }
       }).addTo(map);
@@ -110,6 +115,10 @@
           <div class="legend-item">
             <div class="legend-color" style="background-color: #3498db;"></div>
             <span>FEb (1,432)</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-color" style="background-color: #9b59b6;"></div>
+            <span>Mar (274)</span>
           </div>
         `;
         return div;
